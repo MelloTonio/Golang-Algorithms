@@ -1,7 +1,5 @@
 package Sort
 
-import "fmt"
-
 // BubbleSort
 // Percorre a lista (len(lista) * len(lista)) vezes
 func BubbleSort(numbers []int, max int) {
@@ -14,12 +12,12 @@ func BubbleSort(numbers []int, max int) {
 			}
 		}
 	}
-	fmt.Printf("BubbleSort -> %d ", numbers)
+	// fmt.Printf("BubbleSort -> %d ", numbers)
 }
 
 func RecursiveBubbleSort(numbers []int, max int) {
 	if max == 1 {
-		fmt.Printf("Recursive BubbleSort -> %d", numbers)
+		// fmt.Printf("Recursive BubbleSort -> %d", numbers)
 		return
 	}
 	for outside := 0; outside < max-1; outside++ {
