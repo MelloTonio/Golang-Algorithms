@@ -1,4 +1,4 @@
-package Search
+package main
 
 import (
 	"fmt"
@@ -10,6 +10,14 @@ type Vertex struct {
 	neighbours []*Vertex // All linked vertexes
 }
 
+type Paths struct {
+	localPath []string
+	finalPath [][]string
+}
+
+type Maze struct {
+}
+
 type Graph struct{}
 
 // Add a new Vertex to the Graph, every vertex has 1 value
@@ -19,13 +27,20 @@ func NewVertex(value string) *Vertex {
 	}
 }
 
+func NewPaths() *Paths {
+	return &Paths{
+		localPath: []string{},
+		finalPath: [][]string{},
+	}
+}
+
 // Make a Link between two or more Vertex
 func (v *Vertex) connect(vertex ...*Vertex) {
 	v.neighbours = append(v.neighbours, vertex...)
 }
 
 // Deep First Search algorithm
-func (g *Graph) dfs(vertex *Vertex) {
+func (g *Graph) dfs(vertex *Vertex, p *Paths) {
 	// If the vertex has already been visited, just return
 	if vertex.visited {
 		return
@@ -33,20 +48,19 @@ func (g *Graph) dfs(vertex *Vertex) {
 
 	// If its not, then it has been visited now
 	vertex.visited = true
-	fmt.Println(vertex.value)
+
+	//fmt.Println(vertex.value)
+	p.localPath = append(p.localPath, vertex.value)
 
 	if len(vertex.neighbours) == 0 {
+		p.finalPath = append(p.finalPath, p.localPath)
+
+		p.localPath = []string{}
 		return
 	}
 	// For every connection that some Vertex "holds" we have to go deeper into that connection
 	for _, v := range vertex.neighbours {
-		g.dfs(v)
-	}
-}
-
-func (g *Graph) disconnected(vertices ...*Vertex) {
-	for _, v := range vertices {
-		g.dfs(v)
+		g.dfs(v, p)
 	}
 }
 
@@ -63,24 +77,34 @@ func main() {
 	v10 := NewVertex("10")
 
 	g := Graph{}
+	path := NewPaths()
 
+	// V1 linked to v9,v5,v2
 	v1.connect(v9, v5, v2)
+	// V6 linked to v7
 	v6.connect(v7)
+	// V9 linked to v10
 	v9.connect(v10)
+	// V5 linked to v8 and v6
 	v5.connect(v8, v6)
-	g.dfs(v1)
 
+	g.dfs(v1, path)
+
+	for _, paths := range path.finalPath {
+		for _, item := range paths {
+			fmt.Printf("%s -> ", item)
+		}
+	}
+	fmt.Println("end")
 	/*
-	               v1
-	           / | \__ v2
+	                v1
+	              / | \__ v2
 	           v9   v5
 	           |    | \
-	       v10  v8  v6
-	                   \
-	                   v7
-
-
-	   * 1 -> 'g.dfs(v1) loop' -> print(1) -> g.dfs(v9)..(v5)...(v2)
+	       	  v10  v8  v6
+	                    \
+	                    v7
+	   * 'g.dfs(v1) loop' -> print(1) -> g.dfs(v9)..(v5)...(v2)
 	       * 'g.dfs(v9) loop' -> print(9) -> g.dfs(v10) -> return
 	           *'g.dfs(v10) loop' -> print(10) -> return
 	       * 'g.dfs(v5) loop' -> print(5) -> g.dfs(v8)..(v6) -> return
