@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/mellotonio/Golang-Algorithms/Search"
+	"fmt"
+
+	"github.com/mellotonio/Golang-Algorithms/Sort"
 )
 
 func main() {
-	//numbers := []int{3, 2, 1}
+	numbers := []int{10, 654, 34, 4, 23, 56, 4, 346, 5, 23, 43, 54}
 	//	max := len(numbers)
 
 	// Sort.SelectionSort(numbers, max)
@@ -14,6 +16,8 @@ func main() {
 	// fmt.Println(Sort.MergeSort(numbers))
 	// Quick Sort
 
-	Search.BinarySearch([]int{3, 2, 1, 5, 6, 45, 57}, 42)
+	x := Sort.QuickSort(numbers, 0, len(numbers)-1)
+
+	fmt.Println(x)
 
 }
