@@ -13,9 +13,7 @@ type Vertex struct {
 type Paths struct {
 	localPath []string
 	finalPath [][]string
-}
-
-type Maze struct {
+	stop      bool
 }
 
 type Graph struct{}
@@ -40,31 +38,41 @@ func (v *Vertex) connect(vertex ...*Vertex) {
 }
 
 // Deep First Search algorithm
-func (g *Graph) dfs(vertex *Vertex, p *Paths) {
+func (g *Graph) dfs(vertex *Vertex, p *Paths, untilFind *Vertex) string {
+
 	// If the vertex has already been visited, just return
 	if vertex.visited {
-		return
+		return ""
 	}
 
 	// If its not, then it has been visited now
 	vertex.visited = true
 
 	//fmt.Println(vertex.value)
-	p.localPath = append(p.localPath, vertex.value)
+	if !p.stop {
+		p.localPath = append(p.localPath, vertex.value)
+		if vertex.value == untilFind.value {
+			p.stop = true
+		}
+	}
 
 	if len(vertex.neighbours) == 0 {
 		p.finalPath = append(p.finalPath, p.localPath)
 
 		p.localPath = []string{}
-		return
+		return ""
 	}
 	// For every connection that some Vertex "holds" we have to go deeper into that connection
 	for _, v := range vertex.neighbours {
-		g.dfs(v, p)
+		g.dfs(v, p, untilFind)
 	}
+
+	return vertex.value
 }
 
 func main() {
+	var count int
+
 	v1 := NewVertex("1")
 	v2 := NewVertex("2")
 	// v3 := NewVertex("3")
@@ -78,6 +86,7 @@ func main() {
 
 	g := Graph{}
 	path := NewPaths()
+	path.stop = false
 
 	// V1 linked to v9,v5,v2
 	v1.connect(v9, v5, v2)
@@ -88,14 +97,17 @@ func main() {
 	// V5 linked to v8 and v6
 	v5.connect(v8, v6)
 
-	g.dfs(v1, path)
+	g.dfs(v1, path, v2)
 
 	for _, paths := range path.finalPath {
 		for _, item := range paths {
+			count += 1
 			fmt.Printf("%s -> ", item)
 		}
 	}
+
 	fmt.Println("end")
+	fmt.Printf("Finished in %d steps\n", count)
 	/*
 	                v1
 	              / | \__ v2
