@@ -15,3 +15,6 @@
 * Dijkstra - (Graphs, calculates the distance between first node and all nodes)
 
 
+### Search Algorithms
+
+* Binary Search
