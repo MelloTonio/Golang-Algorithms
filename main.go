@@ -1,5 +1,7 @@
 package main
 
+import BFS "github.com/mellotonio/Golang-Algorithms/BFS_Maze"
+
 func main() {
 	// numbers := []int{10, 654, 34, 4, 23, 56, 4, 346, 5, 23, 43, 54}
 	//	max := len(numbers)
@@ -13,7 +15,9 @@ func main() {
 
 	// Path Finding
 	// Djikstra.Run()
-	// BFS.Run(4, 3) x - y
+	//x
+	//x
+	BFS.Run(9, 9) //yyyyyyyyyyyyyyy
 	// DFS.Run()
 
 }

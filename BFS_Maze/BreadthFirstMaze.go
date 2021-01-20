@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	SIZE = 5 // x
+	M = 10
+	N = 10
 )
 
 type Node struct {
@@ -16,8 +17,8 @@ type Node struct {
 	Parent *Node
 }
 
-func isValid(mat [][]string, visited [SIZE][SIZE]bool, row int, col int) bool {
-	return (row >= 0) && (row < SIZE) && (col >= 0) && (col < SIZE) && mat[row][col] == " " && !visited[row][col]
+func isValid(mat [][]string, visited [M][N]bool, row int, col int) bool {
+	return (row >= 0) && (row < M) && (col >= 0) && (col < N) && mat[row][col] == " " && !visited[row][col]
 }
 
 func BFS(mat [][]string, i int, j int, x int, y int) {
@@ -26,7 +27,7 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 	col := []int{0, -1, 1, 0}
 
 	// Visited is a SIZExSIZE Slice of bool, indicates wich (x,y) have been visited
-	var visited [SIZE][SIZE]bool
+	var visited [M][N]bool
 
 	queue := list.New()
 
@@ -89,27 +90,63 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 func printPath(node *list.Element, mat [][]string) {
 	newNode := node.Value.(*Node)
 
+	lastNodeX := newNode.x
+	lastNodeY := newNode.y
+	// directions := []string{}
+
 	for newNode != nil {
 
-		mat[newNode.x][newNode.y] = "o"
+		switch true {
 
+		case newNode.y > lastNodeY:
+			mat[newNode.x][newNode.y] = "←"
+			// directions = append(directions, "d")
+			lastNodeY = newNode.y
+
+		case newNode.x < lastNodeX:
+			mat[newNode.x][newNode.y] = "↓"
+			// 	directions = append(directions, "c")
+			lastNodeX = newNode.x
+
+		case newNode.y < lastNodeY:
+			mat[newNode.x][newNode.y] = "➜"
+			// directions = append(directions, "e")
+			lastNodeY = newNode.y
+
+		case newNode.x > lastNodeX:
+			mat[newNode.x][newNode.y] = "↑"
+			lastNodeX = newNode.x
+
+		default:
+			mat[newNode.x][newNode.y] = "⟰"
+		}
+
+		// mat[newNode.x][newNode.y] = "o"
+
+		// fmt.Printf("%d %d\n", newNode.x, newNode.y)
 		newNode = newNode.Parent
 	}
 
 	for _, v := range mat {
 		fmt.Println(v)
 	}
+
 }
 
 func Run(x, y int) {
 	// If we change the maze, we must change "CONST SIZE"
 	SliceOfSlices := [][]string{
 		//x
-		{" ", " ", " ", "#", " ", " ", " "}, // y
-		{" ", "#", " ", " ", " ", "#", " "},
-		{" ", "#", " ", " ", " ", " ", " "},
-		{" ", " ", "#", "#", " ", " ", " "},
-		{"#", " ", "#", " ", " ", "#", " "},
+		{" ", " ", " ", " ", " ", "#", "#", " ", " ", " "},
+		{"#", " ", " ", " ", " ", " ", "#", " ", "#", " "},
+		{"#", "#", " ", "#", " ", " ", " ", " ", "#", " "},
+		{" ", "#", " ", " ", " ", "#", " ", " ", "#", " "},
+		{"#", "#", "#", " ", "#", "#", "#", " ", "#", " "},
+		{" ", "#", " ", " ", " ", "#", "#", " ", " ", "#"},
+		{"#", "#", "#", "#", " ", "#", "#", " ", "#", " "},
+		{"#", " ", " ", " ", " ", " ", " ", " ", "#", "#"},
+		{" ", " ", " ", " ", " ", "#", "#", " ", " ", " "},
+		{"#", "#", " ", "#", "#", " ", " ", "#", "#", " "},
 	}
 
 	BFS(SliceOfSlices, 0, 0, x, y)
@@ -118,7 +155,7 @@ func Run(x, y int) {
 /*
 {" ", " ", " ", " ", " ", "#", "#", " ", " ", " "},
 {"#", " ", " ", " ", " ", " ", "#", " ", "#", " "},
-{"#", "#", " ", "#", " ", " ", " ", "#", "#", " "},
+{"#", "#", " ", "#", " ", " ", " ", " ", "#", " "},
 {" ", "#", " ", " ", " ", "#", " ", " ", "#", " "},
 {"#", "#", "#", " ", "#", "#", "#", " ", "#", " "},
 {" ", "#", " ", " ", " ", "#", "#", " ", " ", "#"},
