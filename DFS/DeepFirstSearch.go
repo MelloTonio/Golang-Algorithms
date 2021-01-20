@@ -1,4 +1,4 @@
-package main
+package DFS
 
 import (
 	"fmt"
@@ -70,7 +70,7 @@ func (g *Graph) dfs(vertex *Vertex, p *Paths, untilFind *Vertex) string {
 	return vertex.value
 }
 
-func main() {
+func Run() {
 	var count int
 
 	v1 := NewVertex("1")

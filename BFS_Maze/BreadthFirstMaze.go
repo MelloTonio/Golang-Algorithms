@@ -1,4 +1,4 @@
-package main
+package BFS
 
 import (
 	"container/list"
@@ -101,7 +101,7 @@ func printPath(node *list.Element, mat [][]string) {
 	}
 }
 
-func main() {
+func Run(x, y int) {
 	// If we change the maze, we must change "CONST SIZE"
 	SliceOfSlices := [][]string{
 		//x
@@ -112,7 +112,7 @@ func main() {
 		{"#", " ", "#", " ", " ", "#", " "},
 	}
 
-	BFS(SliceOfSlices, 0, 0, 4, 3)
+	BFS(SliceOfSlices, 0, 0, x, y)
 }
 
 /*

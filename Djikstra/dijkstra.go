@@ -1,4 +1,4 @@
-package main
+package Djikstra
 
 import (
 	"fmt"
@@ -152,7 +152,7 @@ func (graph *Graph) getNodeEdges(node *Node) []*Edge {
 	}
 	return edges
 }
-func main() {
+func Run() {
 
 	a := &Node{nodeID: "a"}
 	b := &Node{nodeID: "b"}
