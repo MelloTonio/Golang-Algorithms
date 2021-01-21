@@ -37,6 +37,7 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 	// Push the first Node into the queue
 	queue.PushFront(&Node{x: i, y: j, dist: 0, Parent: nil})
 
+	// All the distances before (0,0) are unknown, so they are 9999 (infinity)
 	min_dist := 9999
 
 	var node *list.Element
@@ -45,7 +46,7 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 
 	for queue.Len() > 0 {
 
-		// Push a node from the front
+		// Push a node from the back
 		node = queue.Back()
 		//	helper = node
 
@@ -66,10 +67,11 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 		// 4 possible moves
 		for k := 0; k < 4; k++ {
 			// check if it is possible to go to position
-			// (i + row[k], j + col[k]) from current position
+			// (i + row[k], j + col[k]) -> it only increases or decrease 1 in both x,y
 			if isValid(mat, visited, i+row[k], j+col[k]) {
 				// mark next cell as visited and enqueue it
 				visited[i+row[k]][j+col[k]] = true
+				// enqueue all the valid parent nodes
 				queue.PushFront(&Node{x: i + row[k], y: j + col[k], dist: dist + 1, Parent: node.Value.(*Node)})
 				// Just a helper dont mind it
 				//helper = append(helper, node.Value.(*Node))
@@ -88,35 +90,42 @@ func BFS(mat [][]string, i int, j int, x int, y int) {
 }
 
 func printPath(node *list.Element, mat [][]string) {
+	// Get the node that reached the requested (x,y)
 	newNode := node.Value.(*Node)
 
 	lastNodeX := newNode.x
 	lastNodeY := newNode.y
 	// directions := []string{}
 
+	// Backtracking - Go from top to down, all the way until we reach (0,0)
 	for newNode != nil {
 
 		switch true {
 
+		// y + 1
 		case newNode.y > lastNodeY:
 			mat[newNode.x][newNode.y] = "←"
 			// directions = append(directions, "d")
 			lastNodeY = newNode.y
 
+		// x - 1
 		case newNode.x < lastNodeX:
 			mat[newNode.x][newNode.y] = "↓"
 			// 	directions = append(directions, "c")
 			lastNodeX = newNode.x
 
+		// y - 1
 		case newNode.y < lastNodeY:
 			mat[newNode.x][newNode.y] = "➜"
 			// directions = append(directions, "e")
 			lastNodeY = newNode.y
 
+		// x + 1
 		case newNode.x > lastNodeX:
 			mat[newNode.x][newNode.y] = "↑"
 			lastNodeX = newNode.x
 
+		// Result
 		default:
 			mat[newNode.x][newNode.y] = "⟰"
 		}
@@ -127,6 +136,7 @@ func printPath(node *list.Element, mat [][]string) {
 		newNode = newNode.Parent
 	}
 
+	// Print the final path
 	for _, v := range mat {
 		fmt.Println(v)
 	}
