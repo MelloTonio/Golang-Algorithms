@@ -14,6 +14,11 @@
 * Depth First Search - (Graphs, pass through all graphs without repeating)
 * Dijkstra - (Graphs, calculates the distance between first node and all nodes)
 
+### Interview Algorithms
+
+* Balanced Parenthesis
+* LetterCombination 
+* findMedianSortedArrays
 
 ### Search Algorithms
 
