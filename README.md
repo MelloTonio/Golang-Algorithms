@@ -18,7 +18,11 @@
 
 * Balanced Parenthesis
 * LetterCombination 
-* findMedianSortedArrays
+* find Median Sorted Arrays
+* Largest Common Prefix
+* Reverse Number
+* isValid Parenthesis
+* Two Sum
 
 ### Search Algorithms
 
