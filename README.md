@@ -24,6 +24,7 @@
 * isValid Parenthesis
 * Two Sum
 * AddTwoNumbers
+* Double Linked List (C)
 
 ### Search Algorithms
 
